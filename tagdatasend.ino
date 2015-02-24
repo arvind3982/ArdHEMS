@@ -10,8 +10,8 @@ void setup()
 {
   rfid.begin(9600);
   Serial1.begin(9600);
-  Serial.begin(9600);
-  pinMode(13,OUTPUT);
+  //Serial.begin(9600);
+  pinMode(12,OUTPUT);
 }
 
 void readtag()
@@ -29,8 +29,21 @@ void loop()
    }  
   if(f==12)
   {
-    Serial1.write(id);
+    Serial1.println(id);
     f=0;
     count=0;
+    Serial1.println("Press q/w to turn ON/OFF Device");
+  }
+  if(Serial1.available())
+  {
+   ip=Serial1.read();
+   if(ip=='q')
+   {
+     digitalWrite(12,HIGH);
+   }
+   if(ip=='w')
+   {
+     digitalWrite(12,LOW);
+   }
   }
 }  
