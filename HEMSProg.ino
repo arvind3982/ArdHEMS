@@ -10,7 +10,7 @@ void setup()
 {
   rfid.begin(9600);
   Serial1.begin(9600);
-  Serial.begin(9600);
+  //Serial.begin(9600);
   pinMode(13,OUTPUT);
 }
 
