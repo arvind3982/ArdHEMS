@@ -11,11 +11,7 @@ void setup()
   rfid.begin(9600);
   Serial1.begin(9600);
   //Serial.begin(9600);
-<<<<<<< HEAD:HEMSProg.ino
-  pinMode(13,OUTPUT);
-=======
   pinMode(12,OUTPUT);
->>>>>>> RelayFunc:HEMSProg.ino
 }
 
 void readtag()
