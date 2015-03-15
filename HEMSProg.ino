@@ -1,50 +1,159 @@
 #include<SoftwareSerial.h>
 
-SoftwareSerial rfid(10,11);
+SoftwareSerial rfid1(10,11);
+SoftwareSerial rfid2(12,13);
+SoftwareSerial rfid3(14,15);
 
-int count=0, f=0, e=0;
-char tag, ip;
-char id[13], tmp[13];
+int ip;
+
+int count1=0, f1=0, e1=0;
+char tag1, ip1;
+char tmp1[20];
+String id1;
+
+int count2=0, f2=0, e2=0;
+char tag2, ip2;
+char tmp2[20];
+String id2;
+
+int count3=0, f3=0, e3=0;
+char tag3, ip3;
+char tmp3[20];
+String id3;
 
 void setup()
 {
-  rfid.begin(9600);
+  rfid1.begin(9600);
+  rfid2.begin(9600);
+  rfid3.begin(9600);
   Serial1.begin(9600);
-  //Serial.begin(9600);
-  pinMode(12,OUTPUT);
+  pinMode(31,OUTPUT);
+  pinMode(33,OUTPUT);
+  pinMode(35,OUTPUT);
+  pinMode(37,OUTPUT);
+  pinMode(39,OUTPUT);
 }
 
-void readtag()
-{
-  tag=rfid.read();
-  id[count++]=tag;
-} 
 
-void loop()
+void rf1()
 {
-  if(rfid.available())
+  
+  if(rfid1.available())
   {
-    readtag();
-    f++;
-   }  
-  if(f==12)
+    e1=0;
+    tag1=rfid1.read();
+    tmp1[count1++]=tag1;
+    f1++;
+  }
+   
+  if(f1==12)
   {
-    Serial1.println(id);
-    f=0;
-    count=0;
-    Serial1.println("Press q/w to turn ON/OFF Device");
-    e=1;
+    id1=String(tmp1)+":P1";
+    Serial1.println(id1);
+    f1=0;
+    count1=0;
+    e1=1;
   }
   if(Serial1.available())
   {
-   ip=Serial1.read();
-   if(ip=='Q'&&e==1)
+   ip1=Serial1.read();
+   if(ip1=='Q'&&e1==1)
    {
-     digitalWrite(12,HIGH);
+     digitalWrite(35,HIGH);
    }
-   if(ip=='W'&&e==1)
+   if(ip1=='W'&&e1==1)
    {
-     digitalWrite(12,LOW);
+     digitalWrite(35,LOW);
    }
   }
-}  
+}
+
+void rf2()
+{
+  
+  if(rfid2.available())
+  {
+    e2=0;
+    tag2=rfid2.read();
+    tmp2[count2++]=tag2;
+    f2++;
+  }
+   
+  if(f2==12)
+  {
+    id2=String(tmp2)+":P2";
+    Serial1.println(id2);
+    f2=0;
+    count2=0;
+    e2=1;
+  }
+  if(Serial1.available())
+  {
+   ip1=Serial1.read();
+   if(ip2=='E'&&e2==1)
+   {
+     digitalWrite(37,HIGH);
+   }
+   if(ip2=='R'&&e2==1)
+   {
+     digitalWrite(37,LOW);
+   }
+  }
+}
+
+void rf3()
+{
+  
+  if(rfid3.available())
+  {
+    e3=0;
+    tag3=rfid3.read();
+    tmp3[count3++]=tag3;
+    f3++;
+  }
+   
+  if(f3==12)
+  {
+    id3=String(tmp3)+":P3";
+    Serial1.println(id3);
+    f3=0;
+    count3=0;
+    e3=1;
+  }
+  if(Serial1.available())
+  {
+   ip3=Serial1.read();
+   if(ip3=='T'&&e3==1)
+   {
+     digitalWrite(39,HIGH);
+   }
+   if(ip1=='Y'&&e1==1)
+   {
+     digitalWrite(39,LOW);
+   }
+  }
+}
+
+void lnf()
+{
+  if(Serial1.available())
+  {
+    ip=Serial1.read();
+    if(ip=='A')
+      digitalWrite(31,HIGH);
+    if(ip=='S')
+      digitalWrite(31,LOW);
+    if(ip=='D')
+      digitalWrite(33,HIGH);
+    if(ip=='F');
+      digitalWrite(33,LOW);
+  }
+}
+
+void loop()
+{
+  lnf();
+  rf1();
+  rf2();
+  rf3();
+}
