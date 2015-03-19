@@ -23,7 +23,7 @@ void getbtdata()
 {
   if(Serial1.available())
   {
-   ip1=Serial1.read();
+   ip=Serial1.read();
   }
 }
 
