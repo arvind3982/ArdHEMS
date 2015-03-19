@@ -1,8 +1,6 @@
 #include<SoftwareSerial.h>
 
-SoftwareSerial rfid1(10,11);
-SoftwareSerial rfid2(12,13);
-SoftwareSerial rfid3(14,15);
+SoftwareSerial rfid1(10, 11);
 
 int ip;
 
@@ -21,11 +19,19 @@ char tag3, ip3;
 char tmp3[20];
 String id3;
 
+void getbtdata()
+{
+  if(Serial1.available())
+  {
+   ip1=Serial1.read();
+  }
+}
+
 void setup()
 {
   rfid1.begin(9600);
-  rfid2.begin(9600);
-  rfid3.begin(9600);
+  Serial2.begin(9600);
+  Serial3.begin(9600);
   Serial1.begin(9600);
   pinMode(31,OUTPUT);
   pinMode(33,OUTPUT);
@@ -34,10 +40,8 @@ void setup()
   pinMode(39,OUTPUT);
 }
 
-
 void rf1()
 {
-  
   if(rfid1.available())
   {
     e1=0;
@@ -54,27 +58,25 @@ void rf1()
     count1=0;
     e1=1;
   }
-  if(Serial1.available())
+  
+  if(ip=='Q'&&e1==1)
   {
-   ip1=Serial1.read();
-   if(ip1=='Q'&&e1==1)
-   {
-     digitalWrite(35,HIGH);
-   }
-   if(ip1=='W'&&e1==1)
-   {
-     digitalWrite(35,LOW);
-   }
+    digitalWrite(35,HIGH);
   }
+  if(ip=='W'&&e1==1)
+  {
+    digitalWrite(35,LOW);
+  }
+  
 }
 
 void rf2()
 {
   
-  if(rfid2.available())
+  if(Serial2.available())
   {
     e2=0;
-    tag2=rfid2.read();
+    tag2=Serial2.read();
     tmp2[count2++]=tag2;
     f2++;
   }
@@ -87,27 +89,23 @@ void rf2()
     count2=0;
     e2=1;
   }
-  if(Serial1.available())
+  if(ip=='E'&&e2==1)
   {
-   ip1=Serial1.read();
-   if(ip2=='E'&&e2==1)
-   {
-     digitalWrite(37,HIGH);
-   }
-   if(ip2=='R'&&e2==1)
-   {
-     digitalWrite(37,LOW);
-   }
+    digitalWrite(37,HIGH);
+  }
+  if(ip=='R'&&e2==1)
+  {
+    digitalWrite(37,LOW);
   }
 }
 
 void rf3()
 {
   
-  if(rfid3.available())
+  if(Serial3.available())
   {
     e3=0;
-    tag3=rfid3.read();
+    tag3=Serial3.read();
     tmp3[count3++]=tag3;
     f3++;
   }
@@ -120,38 +118,31 @@ void rf3()
     count3=0;
     e3=1;
   }
-  if(Serial1.available())
+  if(ip=='T'&&e3==1)
   {
-   ip3=Serial1.read();
-   if(ip3=='T'&&e3==1)
-   {
-     digitalWrite(39,HIGH);
-   }
-   if(ip1=='Y'&&e1==1)
-   {
-     digitalWrite(39,LOW);
-   }
+    digitalWrite(39,HIGH);
+  }
+  if(ip=='Y'&&e3==1)
+  {
+    digitalWrite(39,LOW);
   }
 }
 
 void lnf()
 {
-  if(Serial1.available())
-  {
-    ip=Serial1.read();
-    if(ip=='A')
-      digitalWrite(31,HIGH);
-    if(ip=='S')
-      digitalWrite(31,LOW);
-    if(ip=='D')
-      digitalWrite(33,HIGH);
-    if(ip=='F');
-      digitalWrite(33,LOW);
-  }
+  if(ip=='A')
+    digitalWrite(31,HIGH);
+  if(ip=='S')
+    digitalWrite(31,LOW);
+  if(ip=='D')
+    digitalWrite(33,HIGH);
+  if(ip=='F');
+    digitalWrite(33,LOW);
 }
 
 void loop()
 {
+  getbtdata();
   lnf();
   rf1();
   rf2();
