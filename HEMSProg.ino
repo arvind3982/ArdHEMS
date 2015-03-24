@@ -2,7 +2,7 @@
 
 SoftwareSerial rfid1(10, 11);
 
-int ip;
+char ip;
 
 int count1=0, f1=0, e1=0;
 char tag1, ip1;
@@ -19,25 +19,25 @@ char tag3, ip3;
 char tmp3[20];
 String id3;
 
-void getbtdata()
-{
-  if(Serial1.available())
-  {
-   ip=Serial1.read();
-  }
-}
-
 void setup()
 {
   rfid1.begin(9600);
+  Serial1.begin(9600);
   Serial2.begin(9600);
   Serial3.begin(9600);
-  Serial1.begin(9600);
   pinMode(31,OUTPUT);
   pinMode(33,OUTPUT);
   pinMode(35,OUTPUT);
   pinMode(37,OUTPUT);
   pinMode(39,OUTPUT);
+}
+
+void getbtdata()
+{
+  if(Serial1.available())
+  {
+   ip=Serial1.read();   
+  }
 }
 
 void rf1()
@@ -128,22 +128,22 @@ void rf3()
   }
 }
 
-void lnf()
+void l()
 {
   if(ip=='A')
     digitalWrite(31,HIGH);
-  if(ip=='S')
+  else if(ip=='S')
     digitalWrite(31,LOW);
-  if(ip=='D')
+  else if(ip=='D')
     digitalWrite(33,HIGH);
-  if(ip=='F');
-    digitalWrite(33,LOW);
+  else if(ip=='F')
+    digitalWrite(33,LOW);  
 }
 
 void loop()
 {
   getbtdata();
-  lnf();
+  l();
   rf1();
   rf2();
   rf3();
